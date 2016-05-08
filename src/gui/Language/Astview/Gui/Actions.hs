@@ -12,6 +12,7 @@ import Language.Astview.DataTree(flatten)
 import Prelude hiding (span,writeFile)
 import Data.List (find)
 import Control.Monad (when,unless,void,zipWithM_)
+import Control.Monad.Trans.Either (runEitherT)
 import Data.Char (toLower)
 import System.IO (withFile,IOMode(..),hPutStr,hClose)
 import System.FilePath (takeExtension,takeFileName)
@@ -74,7 +75,7 @@ actionGetAst :: Language -> AstAction (Either Error Ast)
 actionGetAst l ref = do
   plain <- getText =<< getSourceBuffer ref
   flattening <- getFlattenLists ref
-  return $ (if flattening then flatten else id) <$> parse l plain
+  runEitherT $ (if flattening then flatten else id) <$> parse l plain
 
 -- | parses the contents of the sourceview with the selected language
 actionParse :: Language -> AstAction (Tree String)

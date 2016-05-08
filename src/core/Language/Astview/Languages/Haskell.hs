@@ -7,6 +7,8 @@ import Language.Astview.DataTree (dataToAstIgnoreByExample)
 import Data.Generics (Data,extQ)
 import Data.Generics.Zipper(toZipper,down',query)
 
+import Control.Monad.Trans.Either (EitherT, hoistEither)
+
 import Language.Haskell.Exts.Parser
 import Language.Haskell.Exts.Annotated.Syntax
 import qualified Language.Haskell.Exts.SrcLoc as HsSrcLoc
@@ -14,12 +16,13 @@ import qualified Language.Haskell.Exts.SrcLoc as HsSrcLoc
 haskellExts :: Language
 haskellExts = Language "Haskell" "Haskell" [".hs"] parsehs
 
-parsehs :: String -> Either Error Ast
-parsehs s = case parse s :: ParseResult (Module HsSrcLoc.SrcSpan) of
-  ParseOk t  -> Right $ dataToAstIgnoreByExample getSrcLoc
-                                                 (undefined::HsSrcLoc.SrcSpan)
-                                                 t
-  ParseFailed (HsSrcLoc.SrcLoc _ l c) m -> Left $ ErrLocation (position l c) m
+parsehs :: String -> EitherT Error IO Ast
+parsehs s = hoistEither $
+  case parse s :: ParseResult (Module HsSrcLoc.SrcSpan) of
+    ParseOk t  -> Right $ dataToAstIgnoreByExample getSrcLoc
+                                                   (undefined::HsSrcLoc.SrcSpan)
+                                                   t
+    ParseFailed (HsSrcLoc.SrcLoc _ l c) m -> Left $ ErrLocation (position l c) m
 
 getSrcLoc :: Data t => t -> Maybe SrcSpan
 getSrcLoc t = down' (toZipper t) >>= query (def `extQ` atSpan) where

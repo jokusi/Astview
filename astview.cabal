@@ -52,6 +52,9 @@ Library
                    , syz >= 0.2.0.0
                    , ghc
                    , ghc-paths == 0.1.*
+                   , either >= 4.4.1 && < 4.5
+                   , transformers >= 0.4.2 && < 0.5
+                   
   extensions:      FlexibleInstances,
                    DeriveDataTypeable,
                    RankNTypes
@@ -78,6 +81,7 @@ Executable         astview
                    , directory >= 1.2.0.0
                    , mtl >=2.1.2
                    , fclabels >= 2.0.0.5
+                   , either
 
   extensions:        TemplateHaskell
                    , TypeOperators
@@ -85,6 +89,11 @@ Executable         astview
                    , OverloadedStrings
                    , DoAndIfThenElse
                    , CPP
+  
+  Other-Modules:   Language.Astview.Gui.Actions
+                   Language.Astview.Gui.Init
+                   Language.Astview.Gui.Menu
+                   Language.Astview.Gui.Types
 
 test-suite basic
     type: exitcode-stdio-1.0
@@ -101,3 +110,7 @@ test-suite basic
 
   extensions:      DeriveDataTypeable,
                    DeriveFunctor
+                   
+  Other-Modules:   DataTree
+                   SmallestSrcLocContainingCursor
+                   SourceLocation

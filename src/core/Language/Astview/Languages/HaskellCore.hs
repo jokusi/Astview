@@ -1,6 +1,9 @@
 module Language.Astview.Languages.HaskellCore (haskellCore) where
 import Prelude hiding (span)
 
+import Control.Monad.Trans.Either (EitherT, left, right)
+import Control.Monad.IO.Class (liftIO)
+
 import Data.Tree(Tree(Node))
 import Data.Generics (Data,Typeable,extQ,ext1Q,gmapQ,showConstr,toConstr,typeOf)
 import Data.Generics.Zipper(toZipper,down',query)
@@ -22,17 +25,15 @@ import qualified OccName as GHC
 
 import GHC.Paths (libdir)
 
-import System.IO.Unsafe
-
 haskellCore :: Language
 haskellCore = Language "HaskellCore" "Haskell" [".hs"] parsehs
 
-parsehs :: String -> Either Error Ast
-parsehs s =
-  case runParser flags s parseModule of
-    POk _ parsed -> Right (coreToAst parsed)
-    PFailed ss msg -> Left $ makeError ss (showSDoc flags msg)
-  where flags = unsafePerformIO getDynFlags
+parsehs :: String -> EitherT Error IO Ast
+parsehs s = do
+      flags <- liftIO getDynFlags
+      case runParser flags s parseModule of
+        POk _ parsed -> right (coreToAst parsed)
+        PFailed ss msg -> left $ makeError ss (showSDoc flags msg)
 
 makeError :: GHC.SrcSpan -> String -> Error
 makeError ss s =

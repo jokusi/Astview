@@ -22,6 +22,7 @@ import Data.Tree(Tree(..))
 import Data.Generics (Typeable,Data)
 import Test.QuickCheck
 import Control.Exception(Exception,throw)
+import Control.Monad.Trans.Either (EitherT)
 
 -- |'NodeType' distinguishes two kinds of nodes in arbitrary haskell terms:
 --
@@ -70,7 +71,7 @@ data Language = Language
   -- ^ (kate) syntax highlighter name. Use @[]@ if no highlighting is desired.
   , exts :: [String]
    -- ^ file extentions which should be associated with this language
-  , parse :: String -> Either Error Ast -- ^ parse function
+  , parse :: String -> EitherT Error IO Ast -- ^ parse function
   }
 
 -- |Since parsers return different
