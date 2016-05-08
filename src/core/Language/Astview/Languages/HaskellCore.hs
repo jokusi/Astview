@@ -29,9 +29,10 @@ haskellCore = Language "HaskellCore" "Haskell" [".hs"] parsehs
 
 parsehs :: String -> Either Error Ast
 parsehs s =
-  case runParser s parseModule of
+  case runParser flags s parseModule of
     POk _ parsed -> Right (coreToAst parsed)
-    PFailed ss msg -> Left $ makeError ss (showSDoc (unsafePerformIO getDynFlags) msg)
+    PFailed ss msg -> Left $ makeError ss (showSDoc flags msg)
+  where flags = unsafePerformIO getDynFlags
 
 makeError :: GHC.SrcSpan -> String -> Error
 makeError ss s =
@@ -49,13 +50,13 @@ ghcss2ss real
                    (GHC.srcLocLine end)
                    (GHC.srcLocCol end)
 
-runParser :: String -> P a -> ParseResult a
-runParser str parser = unP parser parseState
+runParser :: GHC.DynFlags -> String -> P a -> ParseResult a
+runParser flags str parser = unP parser parseState
     where
       filename = "<interactive>"
       location = GHC.mkRealSrcLoc (mkFastString filename) 1 1
       buffer = stringToStringBuffer str
-      parseState = mkPState (unsafePerformIO getDynFlags) buffer location
+      parseState = mkPState flags buffer location
 
 getDynFlags :: IO GHC.DynFlags
 getDynFlags =
