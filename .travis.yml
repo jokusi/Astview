@@ -113,8 +113,10 @@ before_install:
   if [ `uname` = "Darwin" ]
   then
     travis_retry curl --insecure -L https://www.stackage.org/stack/osx-x86_64 | tar xz --strip-components=1 --include '*/stack' -C ~/.local/bin
+    brew install gtksourceview gtksourceview3
   else
     travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+    sudo apt-get --no-install-recommends install libgtksourceview2.0-dev libgtksourceview-3.0-dev
   fi
 
   # Use the more reliable S3 mirror of Hackage
@@ -130,8 +132,6 @@ before_install:
 # Get the list of packages from the stack.yaml file
 - PACKAGES=$(stack --install-ghc query locals | grep '^ *path' | sed 's@^ *path:@@')
 
-# Install gtksourceview
-- sudo apt-get --no-install-recommends install libgtksourceview2.0-dev libgtksourceview-3.0-dev
 
 install:
 - echo "$(ghc --version) [$(ghc --print-project-git-commit-id 2> /dev/null || echo '?')]"
