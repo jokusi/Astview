@@ -114,7 +114,7 @@ before_install:
   then
     export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/X11/lib/pkgconfig
     travis_retry curl --insecure -L https://www.stackage.org/stack/osx-x86_64 | tar xz --strip-components=1 --include '*/stack' -C ~/.local/bin
-    brew install gtksourceview gtksourceview3
+    brew install python gtksourceview gtksourceview3
   else
     travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
     sudo apt-get --no-install-recommends install libgtksourceview2.0-dev libgtksourceview-3.0-dev
