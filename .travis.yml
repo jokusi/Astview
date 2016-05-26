@@ -112,7 +112,7 @@ before_install:
 - |
   if [ `uname` = "Darwin" ]
   then
-    export PKG_CONFIG_PATH=/opt/X11/lib/pkgconfig
+    export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/X11/lib/pkgconfig
     travis_retry curl --insecure -L https://www.stackage.org/stack/osx-x86_64 | tar xz --strip-components=1 --include '*/stack' -C ~/.local/bin
     brew install gtksourceview gtksourceview3
   else
