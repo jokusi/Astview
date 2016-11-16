@@ -20,7 +20,7 @@ Category:        Language
 
 Cabal-Version:   >= 1.8
 Build-Type:      Simple
-Tested-with:     GHC==7.10.1
+Tested-with:     GHC>=7.10.1
 Data-Files:      data/astview.xml,
                  data/menu.xml,
                  LICENSE
@@ -44,14 +44,14 @@ Library
                    Language.Astview.Languages.HaskellCore
                    Language.Astview.Languages.Python
   Build-Depends:     base >= 4.6.0.0 && < 5
-                   , containers == 0.5.*
-                   , QuickCheck >= 2.6
-                   , haskell-src-exts >= 1.13.5 && < 1.17
-                   , language-python == 0.4.*
-                   , syb >= 0.3.7
-                   , syz >= 0.2.0.0
+                   , containers
+                   , QuickCheck
+                   , haskell-src-exts
+                   , language-python
+                   , syb
+                   , syz
                    , ghc
-                   , ghc-paths == 0.1.*
+                   , ghc-paths
   extensions:      FlexibleInstances,
                    DeriveDataTypeable,
                    RankNTypes
@@ -70,17 +70,17 @@ Executable         astview
                    Language.Astview.Gui.Types
   Build-Depends:   base
                    , astview
-                   , filepath >= 1.3
-                   , bytestring >= 0.10.0.0
-                   , Glob >= 0.7.2
+                   , filepath
+                   , bytestring
+                   , Glob
                    , containers
                    , QuickCheck
-                   , glib >= 0.13
-                   , gtk3 >= 0.13
-                   , gtksourceview3 >= 0.13
-                   , directory >= 1.2.0.0
-                   , mtl >=2.1.2
-                   , fclabels >= 2.0.0.5
+                   , glib
+                   , gtk3
+                   , gtksourceview3
+                   , directory
+                   , mtl
+                   , fclabels
 
   extensions:        TemplateHaskell
                    , TypeOperators
@@ -100,7 +100,7 @@ test-suite basic
                    astview,
                    containers,
                    syb,
-                   control-monad-omega >= 0.3,
+                   control-monad-omega,
                    tasty,
                    tasty-hunit,
                    tasty-quickcheck,

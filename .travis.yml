@@ -43,6 +43,9 @@ matrix:
   - env: BUILD=cabal GHCVER=7.10.3 CABALVER=1.22 HAPPYVER=1.19.5 ALEXVER=3.1.7
     compiler: ": #GHC 7.10.3"
     addons: {apt: {packages: [cabal-install-1.22,ghc-7.10.3,happy-1.19.5,alex-3.1.7,libgtk2.0-dev,libgtk-3-dev], sources: [hvr-ghc]}}
+  - env: BUILD=cabal GHCVER=8.0.1 CABALVER=1.24.0.1 HAPPYVER=1.19.5 ALEXVER=3.1.7
+    compiler: ": #GHC 8.0.1"
+    addons: {apt: {packages: [cabal-install-1.24.0.1,ghc-8.0.1,happy-1.19.5,alex-3.1.7,libgtk2.0-dev,libgtk-3-dev], sources: [hvr-ghc]}}
 
   # Build with the newest GHC and cabal-install. This is an accepted failure,
   # see below.
@@ -56,17 +59,21 @@ matrix:
     compiler: ": #stack default"
     addons: {apt: {packages: [ghc-7.10.3,libgtk2.0-dev,libgtk-3-dev], sources: [hvr-ghc]}}
 
-  - env: BUILD=stack ARGS="--resolver lts-2 --stack-yaml stack-7.8.4.yaml"
+  - env: BUILD=stack ARGS="--stack-yaml stack-7.8.4.yaml"
     compiler: ": #stack 7.8.4"
     addons: {apt: {packages: [ghc-7.8.4,libgtk2.0-dev,libgtk-3-dev], sources: [hvr-ghc]}}
 
-  - env: BUILD=stack ARGS="--resolver lts-3 --stack-yaml stack-7.10.2.yaml"
+  - env: BUILD=stack ARGS="--stack-yaml stack-7.10.2.yaml"
     compiler: ": #stack 7.10.2"
     addons: {apt: {packages: [ghc-7.10.2,libgtk2.0-dev,libgtk-3-dev], sources: [hvr-ghc]}}
 
-  - env: BUILD=stack ARGS="--resolver lts-5"
+  - env: BUILD=stack ARGS=""
     compiler: ": #stack 7.10.3"
     addons: {apt: {packages: [ghc-7.10.3,libgtk2.0-dev,libgtk-3-dev], sources: [hvr-ghc]}}
+
+  - env: BUILD=stack ARGS="--stack-yaml stack-8.0.1.yaml"
+    compiler: ": #stack 8.0.1"
+    addons: {apt: {packages: [ghc-8.0.1,libgtk2.0-dev,libgtk-3-dev], sources: [hvr-ghc]}}
 
   # Nightly builds are allowed to fail
   - env: BUILD=stack ARGS="--resolver nightly"
@@ -78,16 +85,20 @@ matrix:
     compiler: ": #stack default osx"
     os: osx
 
-  - env: BUILD=stack ARGS="--resolver lts-2 --stack-yaml stack-7.8.4.yaml"
+  - env: BUILD=stack ARGS="--stack-yaml stack-7.8.4.yaml"
     compiler: ": #stack 7.8.4 osx"
     os: osx
 
-  - env: BUILD=stack ARGS="--resolver lts-3 --stack-yaml stack-7.10.2.yaml"
+  - env: BUILD=stack ARGS="--stack-yaml stack-7.10.2.yaml"
     compiler: ": #stack 7.10.2 osx"
     os: osx
 
-  - env: BUILD=stack ARGS="--resolver lts-5"
+  - env: BUILD=stack ARGS=""
     compiler: ": #stack 7.10.3 osx"
+    os: osx
+
+  - env: BUILD=stack ARGS="--stack-yaml stack-8.0.1.yaml"
+    compiler: ": #stack 8.0.1 osx"
     os: osx
 
   - env: BUILD=stack ARGS="--resolver nightly"

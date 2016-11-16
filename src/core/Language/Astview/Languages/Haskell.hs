@@ -15,7 +15,7 @@ haskellExts :: Language
 haskellExts = Language "Haskell" "Haskell" [".hs"] parsehs
 
 parsehs :: String -> Either Error Ast
-parsehs s = case parse s :: ParseResult (Module HsSrcLoc.SrcSpan) of
+parsehs s = case parse s :: ParseResult (Module HsSrcLoc.SrcSpanInfo) of
   ParseOk t  -> Right $ dataToAstIgnoreByExample getSrcLoc
                                                  (undefined::HsSrcLoc.SrcSpan)
                                                  t
